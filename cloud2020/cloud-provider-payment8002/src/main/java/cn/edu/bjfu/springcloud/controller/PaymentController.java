@@ -5,7 +5,6 @@ import cn.edu.bjfu.springcloud.entity.Payment;
 import cn.edu.bjfu.springcloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,32 +24,25 @@ public class PaymentController {
     @Value("${server.port}")
     private String serverPort;
 
-    @Resource
-    private DiscoveryClient discoveryClient;
-
     @PostMapping("/payment/create")
     public CommonResult<Integer> create(@RequestBody Payment payment) {
         int result = paymentService.create(payment);
         log.info(new Date() + "--->插入结果:" + result);
-        if (result > 0 ){
-            return new CommonResult<>(200,"插入成功,服务端口号为:" + serverPort,result);
-        }else {
-            return new CommonResult<>(440,"插入失败",result);
+        if (result > 0) {
+            return new CommonResult<>(200, "插入成功,服务端口号为:" + serverPort, result);
+        } else {
+            return new CommonResult<>(440, "插入失败", result);
         }
     }
 
     @GetMapping("/payment/get/{id}")
-    public CommonResult<Payment> get(@PathVariable("id") Long id){
+    public CommonResult<Payment> get(@PathVariable("id") Long id) {
+        log.info("接收到id:" + id);
         Payment payment = paymentService.getPaymentById(id);
-        if (payment != null){
-            return new CommonResult<>(200,"查询成功,服务端口号为:" + serverPort,payment);
-        }else {
-            return new CommonResult<>(440,"无数据");
+        if (payment != null) {
+            return new CommonResult<>(200, "查询成功,服务端口号为:" + serverPort, payment);
+        } else {
+            return new CommonResult<>(440, "无数据");
         }
-    }
-
-    @GetMapping("/payment/discover")
-    public Object discovery(){
-        return this.discoveryClient;
     }
 }
