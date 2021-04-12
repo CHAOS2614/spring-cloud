@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/4/12
  */
 @Configuration
-public class GatWayConfig {
+public class GateWayConfig {
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder){
