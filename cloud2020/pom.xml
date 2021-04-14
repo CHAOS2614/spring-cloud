@@ -22,6 +22,7 @@
         <module>could-gatway-gatway9527</module>
         <module>cloud-config-center3344</module>
         <module>cloud-stream-rabbitmq-provider8801</module>
+        <module>cloud-stream-rabbitmq-consumer8802</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
