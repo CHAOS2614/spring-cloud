@@ -50,18 +50,24 @@ public class OrderController {
     }
 
     @GetMapping("/consumer/payment/get/{id}")
-    public CommonResult<Payment> getPayment(@PathVariable("id") Long id){
-        return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id,CommonResult.class);
+    public CommonResult<Payment> getPayment(@PathVariable("id") Long id) {
+        return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
     }
 
     @GetMapping(value = "/consumer/payment/lb")
-    public String getPaymentLb(){
+    public String getPaymentLb() {
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
-        if (instances == null || instances.size() <=0) {
+        if (instances == null || instances.size() <= 0) {
             return null;
         }
         ServiceInstance instance = loadBalanced.instances(instances);
         URI uri = instance.getUri();
-        return restTemplate.getForObject(uri + "/payment/lb",String.class);
+        return restTemplate.getForObject(uri + "/payment/lb", String.class);
     }
+
+    @GetMapping("/consumer/payment/zipkin")
+    public String paymentZipkin() {
+        return restTemplate.getForObject("http://localhost:8001" + "/payment/zipkin/", String.class);
+    }
+
 }
